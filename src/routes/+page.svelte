@@ -1,8 +1,10 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/core";
   import { listen } from '@tauri-apps/api/event';
+  import { onMount } from "svelte";
 
   let cps = 10;
+  let chance = 100;
   let code: string[] = [];
 
   const record = async () => {
@@ -10,20 +12,32 @@
   }
 
   const set_cps = async () => {
-    await invoke("cps", { cps: cps });
+    await invoke("cps", { cps: cps || 10 });
+  }
+
+  const set_chance = async () => {
+    await invoke("chance", { chance: chance || 100 });
   }
 
   listen<string[]>("recorded", e => {
     code = e.payload;
-  })
+  });
+
+  onMount(async () => {
+    code = await invoke("bind");
+  });
 </script>
+
 <div class="container">
-  <button on:click={record}>Record</button>
-  <button on:click={set_cps}>Cps</button>
-  <input type="number" bind:value={cps}/>
-  {#each code as c}
-    <p>{c}</p>
-  {/each}
+  <p>Cps</p>
+  <input type="number" bind:value={cps} on:change={set_cps} placeholder="CPS"/>
+  <p>Chance (%)</p>
+  <input type="number" bind:value={chance} on:change={set_chance} placeholder="Chance"/>
+  <p>Bind</p>
+  <div class="bind">
+    {code.join(" + ")}
+  </div>
+  <button on:click={record}>Record Bind</button>
 </div>
 
 <style>
@@ -45,11 +59,29 @@
 
   .container {
     margin: 0;
-    padding-top: 10vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
+  }
+
+  p {
+    margin: .5rem;
+    text-align: left;
+  }
+
+  .bind {
+    margin-bottom: .5rem;
+    text-wrap: nowrap;
+  }
+
+  .bind, input {
+    font-family: inherit;
+    color: #0f0f0f;
+    background-color: #ffffff;
+    border: none;
+    padding: 0.6em 1.2em;
+    border-radius: 8px;
   }
 
   button {
@@ -81,6 +113,11 @@
     :root {
       color: #f6f6f6;
       background-color: #2f2f2f;
+    }
+
+    .bind, input {
+      color: #ffffff;
+      background-color: #18181898;
     }
 
     button {

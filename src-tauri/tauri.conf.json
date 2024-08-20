@@ -1,7 +1,7 @@
 {
   "productName": "auto-clicker",
   "version": "0.0.0",
-  "identifier": "de.profidev.dev",
+  "identifier": "de.profidev.clicker",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -12,8 +12,8 @@
     "windows": [
       {
         "title": "auto-clicker",
-        "width": 800,
-        "height": 600
+        "width": 300,
+        "height": 300
       }
     ],
     "security": {
