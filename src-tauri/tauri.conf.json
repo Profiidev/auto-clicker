@@ -1,5 +1,5 @@
 {
-  "productName": "auto-clicker",
+  "productName": "simple clicker",
   "version": "0.0.0",
   "identifier": "de.profidev.clicker",
   "build": {
@@ -11,7 +11,7 @@
   "app": {
     "windows": [
       {
-        "title": "auto-clicker",
+        "title": "simple clicker",
         "width": 300,
         "height": 300
       }
